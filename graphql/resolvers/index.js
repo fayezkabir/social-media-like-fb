@@ -5,8 +5,8 @@ const commentsResolvers = require("./comments");
 
 module.exports = {
     Post : {
-        likeCount = (parent)  => parent.likes.length,
-        commentCount = (parent) =>  parent.comments.length
+        likeCount : (parent)  => parent.likes.length,
+        commentCount : (parent) =>  parent.comments.length
     },
     Query : {
         ...postsResovers.Query
