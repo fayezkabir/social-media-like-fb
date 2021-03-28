@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Form } from "semantic-ui-react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
+import { AuthContext } from "./../context/auth";
 import { useForm } from "./../utils/hooks";
 
 function Register(props) {
+    const context = useContext(AuthContext);
     const [errors, setErrors] = useState({});
-    const { onChange ,onSubmit ,values : value } = useForm(registerUser , {
+    const { onChange, onSubmit, values: value } = useForm(registerUser, {
         username: "",
         password: "",
         confirmPassword: "",
         email: "",
-    } );
+    });
 
 
     const [adduser, { loading }] = useMutation(REGISTER_USER, {
         update(proxy, result) {
+            context.login(result.data.register); //passing the user data to the application context
             props.history.push("/");
         },
         onError(err) {
@@ -70,7 +73,7 @@ function Register(props) {
                     placeholder="confirm Password.."
                     type="password"
                     name="confirmPassword"
-                    value={value.confirmPassword}                    
+                    value={value.confirmPassword}
                     error={errors.confirmPassword ? true : false}
                     onChange={onChange}
                 />

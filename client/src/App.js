@@ -6,6 +6,8 @@ import { Container } from 'semantic-ui-react';
 
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
+import { AuthContext, AuthProvider } from "./context/auth";
+import AuthRouth from "./utils/authRouth";
 
 //pages
 import Home from "./pages/Home";
@@ -17,14 +19,16 @@ import Menubar from "./components/Menubar";
 
 function App() {
   return (
-    <Router>
-      <Container>
-        <Menubar />
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-      </Container>
-    </Router>
+    <AuthProvider >
+      <Router>
+        <Container>
+          <Menubar />
+          <Route exact path="/" component={Home} />
+          <AuthRouth exact path="/login" component={Login} />
+          <AuthRouth exact path="/register" component={Register} />
+        </Container>
+      </Router>
+    </AuthProvider>
   );
 }
 
