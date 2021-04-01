@@ -1,16 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Button, Form } from "semantic-ui-react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
 import { useForm } from "./../utils/hooks";
 import { FETCH_POSTS_QUERY } from "./../utils/graphql";
-import { AuthContext } from "./../context/auth";
+// import { AuthContext } from "./../context/auth";
 
 
 
 function PostForm(props) {
-    const { getPostCounter , updateCounter } = useContext(AuthContext);
+    // const { getPostCounter , updateCounter } = useContext(AuthContext);
 
     const { onChange, onSubmit, values } = useForm(createPostCallback, {
         body: ""
@@ -21,17 +21,18 @@ function PostForm(props) {
         update(cache, result) {
             // const data = proxy.readQuery(
             //     {
-            //         query: FETCH_POSTS_QUERY, variables: { published: true }
+            //         query: FETCH_POSTS_QUERY
             //     }
             // );
 
             // data.getPosts = [result.data.createPost, ...data.getPosts];
 
-            // proxy.writeQuery(
-            //     {
-            //         query: FETCH_POSTS_QUERY, variables: { published: true }, data: data
-            //     }
-            // );
+            // proxy.writeQuery({
+            //     query: FETCH_POSTS_QUERY,
+            //     data: {
+            //       getPosts: [result.data.createPost, ...data.getPosts],
+            //     },
+            //   });
 
 
 
@@ -43,9 +44,10 @@ function PostForm(props) {
             cache.writeQuery({
                 query: FETCH_POSTS_QUERY,
                 data: { getPosts: [result.data.createPost, ...getPosts] },
+                variables : {id : result.data.createPost.id}
             });
 
-            updateCounter(getPostCounter ? getPostCounter+1  : 1); //this is just for an my context practice
+            // updateCounter(getPostCounter ? getPostCounter+1  : 1); //this is just for an my context practice
 
 
             values.body = ""
@@ -72,7 +74,7 @@ function PostForm(props) {
                         onChange={onChange}
                         error={error ? true : false}
                     />
-                    <Button type="submit" color="teal">
+                    <Button type="submit" disabled={!values.body} color="teal">
                         submit
             </Button>
                 </Form.Field>

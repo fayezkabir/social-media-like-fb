@@ -65,6 +65,7 @@ function AuthProvider(props) {
     };
 
     function updateCounter (data) { //this is just for an my context practice
+        console.log("hitting")
         dispatch({
             type : "COUNT",
             payload: data
